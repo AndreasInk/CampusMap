@@ -10,6 +10,7 @@ import ARKit
 import SwiftUI
 import RealityKit
 import FocusEntity
+import RKPointPin
 
 struct RealityKitView2: UIViewRepresentable {
   
@@ -19,12 +20,15 @@ struct RealityKitView2: UIViewRepresentable {
     @State var boxPos = SIMD3<Float>(x: 0, y: 0, z: 0)
     let arView = ARView()
     var config = ARWorldTrackingConfiguration()
+    let rkPin = RKPointPin()
     func makeUIView(context: Context) -> ARView {
        
 
         // Start AR session
 
-
+        
+        self.arView.addSubview(rkPin)
+        
         
 config.planeDetection = [.horizontal]
      //   config.frameSemantics.insert(.personSegmentationWithDepth)
@@ -42,6 +46,7 @@ coachingOverlay.goal = .horizontalPlane
         arView.addSubview(coachingOverlay)
         arView.debugOptions = [.showSceneUnderstanding, .showFeaturePoints]
         context.coordinator.view = arView
+        context.coordinator.rkPin = rkPin
         arView.session.delegate = context.coordinator
         // Set debug options
 #if DEBUG
@@ -155,7 +160,7 @@ coachingOverlay.goal = .horizontalPlane
                     
                     
                    // anchor.transform.translation = t.translation
-                   
+                    rkPin.targetEntity = diceEntity
                     arView.scene.addAnchor(anchor)
                     anchor.addChild(diceEntity)
                 }
@@ -212,6 +217,7 @@ coachingOverlay.goal = .horizontalPlane
 }
     class Coordinator: NSObject, ARSessionDelegate {
         weak var view: ARView?
+        weak var rkPin: RKPointPin?
         var focusEntity: FocusEntity?
         var count = 0
 var addedGravel = false
@@ -261,6 +267,7 @@ var addedGravel = false
             let material = SimpleMaterial(color: .white, isMetallic: false)
                     let diceEntity = ModelEntity(mesh: box, materials: [material])
                 diceEntity.name = "box"
+            self.rkPin?.targetEntity = diceEntity
             view.session.add(anchor: ARAnchor(name: "HEY", transform: focusEntity.transform.matrix))
             if !addedGravel {
 //            if let url = Bundle.main.url(forResource: "Gravel", withExtension: "usdz") {

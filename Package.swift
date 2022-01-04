@@ -40,7 +40,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/maxxfrazer/FocusEntity", .branch("main")),
         .package(url: "https://github.com/Mist3r-R/location-based-ar.git", .branch("master")),
-        .package(url: "https://github.com/adamfootdev/BottomSheet.git", "0.2.3"..<"1.0.0")
+        .package(url: "https://github.com/adamfootdev/BottomSheet.git", "0.2.3"..<"1.0.0"),
+        .package(url: "https://github.com/maxxfrazer/RKPointPin.git", .branch("master"))
     ],
     targets: [
         .executableTarget(
@@ -48,7 +49,8 @@ let package = Package(
             dependencies: [
                 .product(name: "FocusEntity", package: "focusentity"),
                 .product(name: "LBAR", package: "location-based-ar"),
-                .product(name: "BottomSheet", package: "bottomsheet")
+                .product(name: "BottomSheet", package: "bottomsheet"),
+                .product(name: "RKPointPin", package: "rkpointpin")
             ],
             path: ".",
             resources: [

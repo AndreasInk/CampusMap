@@ -27,6 +27,15 @@
           "revision": "61c72da2cbcfe19e014b8e15d2879631ecfcdcb4",
           "version": null
         }
+      },
+      {
+        "package": "RKPointPin",
+        "repositoryURL": "https://github.com/maxxfrazer/RKPointPin.git",
+        "state": {
+          "branch": "master",
+          "revision": "1f21466ea044057fc525655d71fee93267211a9c",
+          "version": null
+        }
       }
     ]
   },
