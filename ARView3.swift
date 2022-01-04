@@ -12,7 +12,7 @@ import RealityKit
 import FocusEntity
 
 struct RealityKitView2: UIViewRepresentable {
-   
+  
     @Binding var saved: Bool
     @Binding var loaded: Bool
     @Binding var placer: Bool
@@ -29,8 +29,8 @@ struct RealityKitView2: UIViewRepresentable {
 config.planeDetection = [.horizontal]
      //   config.frameSemantics.insert(.personSegmentationWithDepth)
       //  config.frameSemantics.insert(.smoothedSceneDepth)
-       // config.sceneReconstruction = .mesh
-       
+        config.sceneReconstruction = .mesh
+      
         arView.session.run(config)
 
         // Add coaching overlay
@@ -71,7 +71,7 @@ coachingOverlay.goal = .horizontalPlane
            
         }
         if loaded {
-            loadMapFtomFile()
+            self.loadWorldMap()
             //self.loadWorldMap()
         }
         if placer {
@@ -120,7 +120,7 @@ coachingOverlay.goal = .horizontalPlane
         
     }
     fileprivate func loadMapFtomFile() {
-        let urlPath = Bundle.main.url(forResource: "world2", withExtension: "txt")
+        let urlPath = Bundle.main.url(forResource: "world3", withExtension: "txt")
         let urlPath2 = Bundle.main.url(forResource: "pos", withExtension: "txt")!
         
         if let unarchiver = try? NSKeyedUnarchiver.unarchivedObject(
@@ -181,8 +181,32 @@ coachingOverlay.goal = .horizontalPlane
                let worldMap = unarchiver as? ARWorldMap {
                 print(worldMap.rawFeaturePoints)
                 config.initialWorldMap = worldMap
-                
-                arView.session.run(config)
+                for anchor in worldMap.anchors {
+                   
+                   
+                    let box = MeshResource.generateBox(size: 0.1, cornerRadius: 0.05)
+                let material = SimpleMaterial(color: .white, isMetallic: true)
+                        let diceEntity = ModelEntity(mesh: box, materials: [material])
+                    //diceEntity.transform.matrix = t
+                    if anchor.name == "HEY" {
+                    let anchor = AnchorEntity(anchor: anchor)
+                   
+                   
+                   
+                   // self.focusEntity = FocusEntity(on: view, style: .classic(color: .Primary))
+                   // if self.updatePostion {
+                   
+                      
+                   // guard let anchor =  view.scene.anchors.first else { return }
+                    
+                    
+                   // anchor.transform.translation = t.translation
+                    anchor.addChild(diceEntity)
+                    arView.scene.addAnchor(anchor)
+                   
+                    }
+                }
+                arView.session.run(config, options: [.removeExistingAnchors, .resetTracking])
             }
         }
 }
@@ -191,6 +215,7 @@ coachingOverlay.goal = .horizontalPlane
         var focusEntity: FocusEntity?
         var count = 0
 var addedGravel = false
+        var collect = Collect()
         func addBox() {
             let anchor = AnchorEntity()
                
@@ -241,8 +266,21 @@ var addedGravel = false
             guard let focusEntity = self.focusEntity else { return }
            
             
+            
             //}
           
+        }
+        var i = 0
+        
+        func session(_ session: ARSession, didUpdate frame: ARFrame) {
+//             i += 1
+//            if i % 10 == 0 {
+//            _ = view?.snapshot(saveToHDR: false, completion: { image in
+//                
+//                print(image)
+//                self.collect.readImage(CIImage(image: image!)!)
+//            })
+//            }
         }
     }
 }

@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "BottomSheet",
+        "repositoryURL": "https://github.com/adamfootdev/BottomSheet.git",
+        "state": {
+          "branch": null,
+          "revision": "6772d56b8bf082dd25565d13d0d5603e969d33b8",
+          "version": "0.2.3"
+        }
+      },
+      {
         "package": "FocusEntity",
         "repositoryURL": "https://github.com/maxxfrazer/FocusEntity",
         "state": {
