@@ -240,9 +240,25 @@ var addedGravel = false
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
 //                view.scene.removeAnchor(anchor)
 //            }
+            let textAnchor = anchor
+            let modelEnt = ModelEntity(mesh: MeshResource.generateBox(size: 0.1,  cornerRadius: 0.05), materials: [SimpleMaterial(color: .white, isMetallic: false)])
+            textAnchor.addChild(modelEnt)
+          
+            let textEntity: Entity = textAnchor.children[0]
            
-                let box = MeshResource.generateBox(size: 0.1, cornerRadius: 0.05)
-            let material = SimpleMaterial(color: .white, isMetallic: true)
+            var textModelComponent: ModelComponent = (textEntity.components[ModelComponent])!
+
+            textModelComponent.mesh = .generateText(anchor.name,
+                                     extrusionDepth: 0.5,
+                                               font: .systemFont(ofSize: 0.25),
+                                     containerFrame: CGRect.zero,
+                                          alignment: .center,
+                                      lineBreakMode: .byCharWrapping)
+
+            textAnchor.children[0].components.set(textModelComponent)
+            //view.scene.anchors.append(textAnchor)
+                let box = MeshResource.generateText("Hello World")
+            let material = SimpleMaterial(color: .white, isMetallic: false)
                     let diceEntity = ModelEntity(mesh: box, materials: [material])
                 diceEntity.name = "box"
             view.session.add(anchor: ARAnchor(name: "HEY", transform: focusEntity.transform.matrix))
